@@ -74,11 +74,7 @@ section{padding:clamp(48px,7vw,88px) 0}
 .hl p{color:var(--ink-2);font-size:14px;line-height:1.5}
 @media (max-width:820px){.head .sub{display:none}}
 @media (max-width:820px){.hl{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}.hl > div:nth-child(3){padding-left:0;border-left:0}}
-.support{margin-top:44px;padding-top:24px;border-top:1px solid var(--line)}
 .support .mono{color:var(--accent)}
-.support p{font-family:Anton,sans-serif;text-transform:uppercase;font-size:clamp(20px,2.4vw,30px);line-height:1.3;margin-top:10px}
-.support p b{font-weight:400;white-space:nowrap}
-.support p .sl{color:var(--muted);padding:0 .1em}
 
 /* releases */
 .rel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
@@ -93,7 +89,7 @@ section{padding:clamp(48px,7vw,88px) 0}
 @media (max-width:820px){.rel{grid-template-columns:repeat(2,minmax(0,1fr))}.rel .go,.rel .meta{letter-spacing:.1em;font-size:10px}}
 
 /* dark music block */
-.dark{background:var(--dark);color:var(--paper)}
+.dark{color:var(--paper)}
 .dark .head{border-color:#4a453e}
 .dark .head .sub{color:#8a8378}
 .dark h2{font-size:clamp(40px,5vw,64px);margin-bottom:10px}
@@ -152,6 +148,83 @@ section{padding:clamp(48px,7vw,88px) 0}
 
 footer{border-top:1px solid var(--ink);padding:22px 0 40px}
 footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted)}
+
+/* ---- softer light/dark transition ---- */
+.dark{position:relative;background:var(--dark);padding:clamp(56px,7vw,96px) 0;margin:clamp(120px,14vw,200px) 0}
+.dark::before,.dark::after{content:"";position:absolute;left:0;right:0;height:clamp(120px,14vw,200px);pointer-events:none}
+.dark::before{bottom:100%;background:linear-gradient(to bottom,var(--paper) 0%,#e6dccb 18%,#c7baa5 38%,#8f8473 58%,#4f4840 78%,#2a2622 90%,var(--dark) 100%)}
+.dark::after{top:100%;background:linear-gradient(to top,var(--paper) 0%,#e6dccb 18%,#c7baa5 38%,#8f8473 58%,#4f4840 78%,#2a2622 90%,var(--dark) 100%)}
+#live{padding-top:0}
+
+/* ---- support ticker: present but quiet ---- */
+.support{margin-top:48px;padding-top:22px;border-top:1px solid var(--line)}
+.support .wrap{border:0}
+.ticker{overflow:hidden;margin-top:12px;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
+.track-run{display:inline-flex;white-space:nowrap;animation:tick 40s linear infinite;font-family:Anton,sans-serif;text-transform:uppercase;font-size:clamp(18px,1.8vw,22px);color:var(--ink-2)}
+.track-run b{font-weight:400}
+.track-run .sl{color:var(--accent);padding:0 .8em}
+.support:hover .track-run{animation-play-state:paused}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* ---- scroll reveals ---- */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .9s cubic-bezier(.2,.7,.2,1) var(--d,0s),transform .9s cubic-bezier(.2,.7,.2,1) var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+.head.reveal::after{content:"";position:absolute}
+.head{position:relative}
+
+/* ---- hero intro ---- */
+.hero h1 .line{display:block;overflow:hidden}
+.hero h1 .line>span{display:block;transform:translateY(105%);animation:rise 1s cubic-bezier(.2,.75,.2,1) forwards}
+.hero h1 .line:nth-child(2)>span{animation-delay:.12s}
+@keyframes rise{to{transform:none}}
+.bar{transform-origin:left;transform:scaleX(0);animation:grow .8s cubic-bezier(.2,.7,.2,1) .45s forwards}
+@keyframes grow{to{transform:scaleX(1)}}
+.intro-up{opacity:0;transform:translateY(16px);animation:up .8s cubic-bezier(.2,.7,.2,1) var(--d,0s) forwards}
+@keyframes up{to{opacity:1;transform:none}}
+.intro-photo img{transform:scale(1.08);opacity:0;animation:photo 1.4s cubic-bezier(.2,.7,.2,1) .05s forwards}
+@keyframes photo{to{transform:scale(1);opacity:1}}
+.rings{animation:fadein 1.6s ease .3s both}
+@keyframes fadein{from{opacity:0}}
+.rings .orbit{position:absolute;inset:14%;border-radius:50%;animation:spin 14s linear infinite}
+.rings .orbit b{position:absolute;left:50%;top:-4px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:var(--ink)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.parallax img{will-change:transform}
+
+@media (prefers-reduced-motion:reduce){
+  .reveal,.intro-up,.intro-photo img,.hero h1 .line>span,.bar{opacity:1!important;transform:none!important;animation:none!important;transition:none!important}
+  .track-run,.rings .orbit,.rings{animation:none!important}
+}
+
+/* ---- gallery ---- */
+#gallery{padding-top:clamp(40px,6vw,72px)}
+.head a.sub:hover{color:var(--accent)}
+.gtitle{font-size:clamp(40px,5vw,64px);margin-bottom:28px}
+.vrow{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(240px,1fr);gap:16px;overflow-x:auto;padding-bottom:10px;margin-bottom:28px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.vcard{position:relative;aspect-ratio:9/12;border:0;padding:0;cursor:pointer;background:var(--dark);overflow:hidden;scroll-snap-align:start;text-align:left;color:var(--paper)}
+.vposter{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s cubic-bezier(.2,.7,.2,1);filter:saturate(.9)}
+.vcard::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(20,18,15,.88),rgba(20,18,15,.1) 55%,rgba(20,18,15,0))}
+.vcard:hover .vposter{transform:scale(1.05)}
+.vplay{position:absolute;z-index:1;left:18px;top:18px;width:46px;height:46px;border-radius:50%;background:var(--accent);display:grid;place-items:center;transition:transform .2s}
+.vcard:hover .vplay{transform:scale(1.08)}
+.vplay svg{width:16px;height:16px;fill:#fff}
+.vmeta{position:absolute;z-index:1;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:4px}
+.vmeta b{font-weight:400;font-size:26px}
+.vmeta .mono{color:#c9c0b2}
+.masonry{columns:3 260px;column-gap:16px}
+.ph{display:block;width:100%;margin:0 0 16px;padding:0;border:0;background:var(--paper-2);cursor:zoom-in;break-inside:avoid;overflow:hidden}
+.ph img{width:100%;height:auto;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.ph:hover img{transform:scale(1.035)}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(18,16,14,.94);display:grid;grid-template-columns:64px 1fr 64px;align-items:center}
+.lightbox[hidden]{display:none}
+.lb-stage{height:86vh;display:grid;place-items:center}
+.lb-stage img{max-width:100%;max-height:86vh;object-fit:contain}
+.lb-stage iframe{width:min(90vw,1100px);height:min(86vh,62vw);border:0;background:#000}
+.lb-close{position:absolute;top:18px;right:22px;background:none;border:0;color:var(--paper);cursor:pointer;font-size:12px}
+.lb-nav{background:none;border:0;color:var(--paper);font-size:44px;cursor:pointer;height:100%}
+.lb-nav:hover,.lb-close:hover{color:var(--accent)}
+.lb-cap{position:absolute;left:0;right:0;bottom:16px;text-align:center;color:#b9b1a4}
+.lightbox.video .lb-nav{visibility:hidden}
+@media (max-width:820px){.masonry{columns:2;column-gap:10px}.ph{margin-bottom:10px}.vrow{grid-auto-columns:62%}.lightbox{grid-template-columns:40px 1fr 40px}.lb-stage iframe{height:60vh}}
 </style>
 </head>
 <body>
@@ -161,9 +234,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
     <a href="#" class="brand">OVERHOFF</a>
     <nav class="mono">
       <a href="#releases">Releases</a>
+      <a href="#bio">Bio</a>
       <a href="#unreleased">Unreleased</a>
       <a href="#sets">Sets</a>
-      <a href="#bio">Bio</a>
+      <a href="#live">Live</a>
+      <a href="#gallery">Gallery</a>
       <a href="#booking">Booking</a>
     </nav>
     <span class="mono loc">Amsterdam, NL / Available worldwide</span>
@@ -173,14 +248,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 <main>
 <div class="hero">
   <div class="wrap grid">
-    <div class="photo"><img src="img/press-white.jpg" alt="Overhoff, press photo"></div>
+    <div class="photo intro-photo"><img src="img/press-white.jpg" alt="Overhoff, press photo"></div>
     <div class="name-block">
-      <div class="rings" aria-hidden="true"><span></span><span></span><span></span><i></i></div>
-      <h1 class="display">Over<br>hoff</h1>
+      <div class="rings" aria-hidden="true"><span></span><span></span><span></span><em class="orbit"><b></b></em><i></i></div>
+      <h1 class="display"><span class="line"><span>Over</span></span><span class="line"><span>hoff</span></span></h1>
       <div class="bar"></div>
-      <p class="tagline">Groove-driven, high-impact house from Amsterdam. Rolling basslines, driving drums, records made to move a club.</p>
-      <div class="genres mono">House <b>/</b> Driving <b>/</b> Groovy</div>
-      <div class="cta mono">
+      <p class="tagline intro-up" style="--d:.55s">Groove-driven, high-impact house from Amsterdam. Rolling basslines, driving drums, records made to move a club.</p>
+      <div class="genres mono intro-up" style="--d:.65s">House <b>/</b> Driving <b>/</b> Groovy</div>
+      <div class="cta mono intro-up" style="--d:.75s">
         <a class="btn" href="#booking">Bookings ↗</a>
         <a class="btn ghost" href="#unreleased">Listen</a>
       </div>
@@ -188,45 +263,29 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   </div>
 </div>
 
-<section id="highlights" style="padding-top:0">
+<section id="releases" style="padding-top:clamp(24px,4vw,48px)">
   <div class="wrap">
-    <div class="head"><span class="mono">Highlights</span></div>
-    <div class="hl">
-      <div><span class="mono n">01</span><h3 class="display">Madam</h3><p>A'DAM Toren, Amsterdam<br>B2B with Milan Fernandes</p></div>
-      <div><span class="mono n">02</span><h3 class="display">Toffler</h3><p>Rotterdam</p></div>
-      <div><span class="mono n">03</span><h3 class="display">Dream Village</h3><p>Festival, Bavel</p></div>
-      <div><span class="mono n">04</span><h3 class="display">Duikboot</h3><p>Festival, Breda</p></div>
-    </div>
-    <div class="support">
-      <span class="mono">Support from</span>
-      <p><b>Jamie Jones</b> <span class="sl">/</span> <b>Joseph Capriati</b> <span class="sl">/</span> <b>Paco Osuna</b> <span class="sl">/</span> <b>Rossi.</b> <span class="sl">/</span> <b>Late Replies</b> <span class="sl">/</span> <b>Prunk</b> <span class="sl">/</span> <b>Westend</b> <span class="sl">/</span> <b>Hights</b></p>
-    </div>
-  </div>
-</section>
-
-<section id="releases" style="padding-top:0">
-  <div class="wrap">
-    <div class="head"><span class="mono">Releases</span></div>
+    <div class="head reveal"><span class="mono">Releases</span></div>
     <div class="rel">
-      <a href="https://open.spotify.com/track/3RXQn3vgVIm3Je5P8tF4v6" target="_blank" rel="noopener">
+      <a class="reveal" style="--d:0.00s" href="https://open.spotify.com/track/3RXQn3vgVIm3Je5P8tF4v6" target="_blank" rel="noopener">
         <div class="art"><img src="img/gotta-rhythm.jpg" alt="Gotta Rhythm artwork" loading="lazy"></div>
         <div class="mono meta">A1 / Blanc Rotation</div>
         <h3 class="display">Gotta Rhythm</h3><p>Sep 2026</p>
         <div class="mono go">Listen on Spotify ↗</div>
       </a>
-      <a href="https://open.spotify.com/track/7gI4wcX4sGqY6c40t7SyPM" target="_blank" rel="noopener">
+      <a class="reveal" style="--d:0.08s" href="https://open.spotify.com/track/7gI4wcX4sGqY6c40t7SyPM" target="_blank" rel="noopener">
         <div class="art"><img src="img/cant-touch.jpg" alt="Can't Touch artwork" loading="lazy"></div>
         <div class="mono meta">A2 / Blanc Rotation</div>
         <h3 class="display">Can't Touch</h3><p>Aug 2026</p>
         <div class="mono go">Listen on Spotify ↗</div>
       </a>
-      <a href="https://open.spotify.com/track/2garqbP8ijGHQdrWXgC8Y7" target="_blank" rel="noopener">
+      <a class="reveal" style="--d:0.16s" href="https://open.spotify.com/track/2garqbP8ijGHQdrWXgC8Y7" target="_blank" rel="noopener">
         <div class="art"><img src="img/lead-you.jpg" alt="Lead You artwork" loading="lazy"></div>
         <div class="mono meta">B1 / Psicodelica</div>
         <h3 class="display">Lead You</h3><p>with Samuel Maurice · Jul 2026</p>
         <div class="mono go">Listen on Spotify ↗</div>
       </a>
-      <a href="https://open.spotify.com/track/1iP0Ha4UU6iaGtTqC0sJY9" target="_blank" rel="noopener">
+      <a class="reveal" style="--d:0.24s" href="https://open.spotify.com/track/1iP0Ha4UU6iaGtTqC0sJY9" target="_blank" rel="noopener">
         <div class="art"><img src="img/opening-up.jpg" alt="Opening Up artwork" loading="lazy"></div>
         <div class="mono meta">B2 / Recode Deep</div>
         <h3 class="display">Opening Up</h3><p>Yoffi, Overhoff Remix · Jul 2026</p>
@@ -236,18 +295,32 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   </div>
 </section>
 
+<section id="bio" style="padding-top:0">
+  <div class="wrap">
+    <div class="head reveal"><span class="mono">Bio</span></div>
+    <div class="bio">
+      <div class="photo reveal parallax"><img src="img/press-orange.jpg" alt="Overhoff in a peacock chair"></div>
+      <div class="text reveal" style="--d:.12s">
+        <p>A passion for groove combined with an obsession for drive defines Amsterdam-based producer and DJ Overhoff. Drawing inspiration from a wide range of genres, his sound is built around forward movement, groove and drive, with a dynamic and propulsive approach firmly focused on the dancefloor.</p>
+        <p>After developing his craft at the Conservatorium van Amsterdam (AEMA), Overhoff began translating that foundation into his own direction within house music. Since then, he has released music on labels including Blanc and Psicodelica, while steadily expanding his own catalogue and further shaping his sound.</p>
+        <p>That momentum has also carried into his DJ career, with Overhoff becoming an increasingly familiar name across the Dutch club circuit. Playing regularly in Amsterdam and Rotterdam and appearing at some of the cities' leading clubs and venues, he continues to build his career both in the studio and behind the decks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="dark" id="unreleased">
   <div class="wrap">
     <div class="head"><span class="mono">Unreleased</span><span class="mono sub">Click the waveform to jump</span></div>
-    <h2 class="display">Fresh from the studio</h2>
-    <p class="intro">Records that are not out yet, streamed lossless. Play them here, and if one fits your set, grab it through SoundCloud.</p>
+    <h2 class="display reveal">Unreleased and Open</h2>
+    <p class="intro reveal">Records that are not out yet, streamed lossless. Play them here, and if one fits your set, grab it through SoundCloud.</p>
     <div class="tracks" id="tracks"></div>
 
     <div class="sets" id="sets">
       <div class="head"><span class="mono">Sets</span><span class="mono sub">Full recordings</span></div>
-      <h2 class="display">Hear him behind the decks</h2>
-      <p class="intro">Extended club sets, recorded live.</p>
-      <div class="sc-frame">
+      <h2 class="display reveal">Behind Decks</h2>
+      <p class="intro reveal">Extended club sets, recorded live.</p>
+      <div class="sc-frame reveal">
         <iframe title="Overhoff sets on SoundCloud" allow="autoplay" loading="lazy"
           src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F1911119443%3Fsecret_token%3Ds-eDQAZu6Jl3J&color=%23d4521f&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false"></iframe>
       </div>
@@ -259,24 +332,125 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
   </div>
 </section>
 
-<section id="bio">
+<section id="live">
   <div class="wrap">
-    <div class="head"><span class="mono">Bio</span></div>
-    <div class="bio">
-      <div class="photo"><img src="img/press-orange.jpg" alt="Overhoff in a peacock chair"></div>
-      <div class="text">
-        <p>A passion for groove combined with an obsession for drive defines Amsterdam-based producer and DJ Overhoff. Drawing inspiration from a wide range of genres, his sound is built around forward movement, groove and drive, with a dynamic and propulsive approach firmly focused on the dancefloor.</p>
-        <p>After developing his craft at the Conservatorium van Amsterdam (AEMA), Overhoff began translating that foundation into his own direction within house music. Since then, he has released music on labels including Blanc and Psicodelica, while steadily expanding his own catalogue and further shaping his sound.</p>
-        <p>That momentum has also carried into his DJ career, with Overhoff becoming an increasingly familiar name across the Dutch club circuit. Playing regularly in Amsterdam and Rotterdam and appearing at some of the cities' leading clubs and venues, he continues to build his career both in the studio and behind the decks.</p>
-      </div>
+    <div class="head reveal"><span class="mono">Live highlights</span></div>
+    <div class="hl">
+      <div class="reveal" style="--d:0s"><span class="mono n">01</span><h3 class="display">Madam</h3><p>A'DAM Toren, Amsterdam<br>B2B with Milan Fernandes</p></div>
+      <div class="reveal" style="--d:.08s"><span class="mono n">02</span><h3 class="display">Toffler</h3><p>Rotterdam</p></div>
+      <div class="reveal" style="--d:.16s"><span class="mono n">03</span><h3 class="display">Dream Village</h3><p>Festival, Bavel</p></div>
+      <div class="reveal" style="--d:.24s"><span class="mono n">04</span><h3 class="display">Duikboot</h3><p>Festival, Breda</p></div>
+    </div>
+  </div>
+  <div class="support reveal" aria-label="Support from Jamie Jones, Joseph Capriati, Paco Osuna, Rossi., Late Replies, Prunk, Westend, Hights">
+    <div class="wrap"><span class="mono">Support from</span></div>
+    <div class="ticker" aria-hidden="true"><div class="track-run"><b>Jamie Jones</b><span class="sl">/</span><b>Joseph Capriati</b><span class="sl">/</span><b>Paco Osuna</b><span class="sl">/</span><b>Rossi.</b><span class="sl">/</span><b>Late Replies</b><span class="sl">/</span><b>Prunk</b><span class="sl">/</span><b>Westend</b><span class="sl">/</span><b>Hights</b><span class="sl">/</span><b>Jamie Jones</b><span class="sl">/</span><b>Joseph Capriati</b><span class="sl">/</span><b>Paco Osuna</b><span class="sl">/</span><b>Rossi.</b><span class="sl">/</span><b>Late Replies</b><span class="sl">/</span><b>Prunk</b><span class="sl">/</span><b>Westend</b><span class="sl">/</span><b>Hights</b><span class="sl">/</span></div></div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="head reveal"><span class="mono">Gallery</span><a class="mono sub" href="https://drive.google.com/drive/folders/126KuHMwPIAEleMBlFPDJhe2ZjP1gmK0l" target="_blank" rel="noopener">Full press kit ↗</a></div>
+    <h2 class="display gtitle reveal">On the decks</h2>
+    <div class="vrow">
+      <button class="vcard reveal" style="--d:0.00s" data-video="1Zhs8GacUdZElvgM9-1UcNeO68HZi6LYF" aria-label="Play video: Madam, A'DAM Toren, B2B with Milan Fernandes">
+        <span class="vposter" style="background-image:url('https://drive.google.com/thumbnail?id=1Zhs8GacUdZElvgM9-1UcNeO68HZi6LYF&amp;sz=w800')"></span>
+        <span class="vplay"><svg viewBox="0 0 24 24"><path d="M7 4l14 8-14 8z"/></svg></span>
+        <span class="vmeta"><b class="display">Madam</b><span class="mono">A'DAM Toren, B2B with Milan Fernandes</span></span>
+      </button>
+      <button class="vcard reveal" style="--d:0.06s" data-video="1hiTRsyZKjqZW7fBHu5M3ghGryI3m7FKb" aria-label="Play video: Holy Moly, Kingsnight, Breda">
+        <span class="vposter" style="background-image:url('https://drive.google.com/thumbnail?id=1hiTRsyZKjqZW7fBHu5M3ghGryI3m7FKb&amp;sz=w800')"></span>
+        <span class="vplay"><svg viewBox="0 0 24 24"><path d="M7 4l14 8-14 8z"/></svg></span>
+        <span class="vmeta"><b class="display">Holy Moly</b><span class="mono">Kingsnight, Breda</span></span>
+      </button>
+      <button class="vcard reveal" style="--d:0.12s" data-video="1xOOcMa1HSh5tbWrDjoTH3zfvyCCKHSsG" aria-label="Play video: PIEKEN! Festival, Aftermovie, Breda">
+        <span class="vposter" style="background-image:url('https://drive.google.com/thumbnail?id=1xOOcMa1HSh5tbWrDjoTH3zfvyCCKHSsG&amp;sz=w800')"></span>
+        <span class="vplay"><svg viewBox="0 0 24 24"><path d="M7 4l14 8-14 8z"/></svg></span>
+        <span class="vmeta"><b class="display">PIEKEN! Festival</b><span class="mono">Aftermovie, Breda</span></span>
+      </button>
+      <button class="vcard reveal" style="--d:0.18s" data-video="1aZ3pIb_2-vlVFvtUbnkbLWC6sD4KKxMq" aria-label="Play video: The Label, Pacific">
+        <span class="vposter" style="background-image:url('https://drive.google.com/thumbnail?id=1aZ3pIb_2-vlVFvtUbnkbLWC6sD4KKxMq&amp;sz=w800')"></span>
+        <span class="vplay"><svg viewBox="0 0 24 24"><path d="M7 4l14 8-14 8z"/></svg></span>
+        <span class="vmeta"><b class="display">The Label</b><span class="mono">Pacific</span></span>
+      </button>
+      <button class="vcard reveal" style="--d:0.24s" data-video="1HCkJflWNeuh1XL-snMC2wC6zl4uUia1N" aria-label="Play video: Novia, DJ set">
+        <span class="vposter" style="background-image:url('https://drive.google.com/thumbnail?id=1HCkJflWNeuh1XL-snMC2wC6zl4uUia1N&amp;sz=w800')"></span>
+        <span class="vplay"><svg viewBox="0 0 24 24"><path d="M7 4l14 8-14 8z"/></svg></span>
+        <span class="vmeta"><b class="display">Novia</b><span class="mono">DJ set</span></span>
+      </button>
+      <button class="vcard reveal" style="--d:0.30s" data-video="1PXI0hHy9Q2BuuViu7OT7KAi79auhDyzt" aria-label="Play video: Novia, B2B with Davide">
+        <span class="vposter" style="background-image:url('https://drive.google.com/thumbnail?id=1PXI0hHy9Q2BuuViu7OT7KAi79auhDyzt&amp;sz=w800')"></span>
+        <span class="vplay"><svg viewBox="0 0 24 24"><path d="M7 4l14 8-14 8z"/></svg></span>
+        <span class="vmeta"><b class="display">Novia</b><span class="mono">B2B with Davide</span></span>
+      </button>
+      <button class="vcard reveal" style="--d:0.36s" data-video="1TQ8weAnkAq2beHzY40XisiaG6spEZt7I" aria-label="Play video: Novia, DJ set, part 2">
+        <span class="vposter" style="background-image:url('https://drive.google.com/thumbnail?id=1TQ8weAnkAq2beHzY40XisiaG6spEZt7I&amp;sz=w800')"></span>
+        <span class="vplay"><svg viewBox="0 0 24 24"><path d="M7 4l14 8-14 8z"/></svg></span>
+        <span class="vmeta"><b class="display">Novia</b><span class="mono">DJ set, part 2</span></span>
+      </button>
+    </div>
+    <div class="masonry">
+      <button class="ph reveal" data-full="img/gallery/p01.jpg" data-cap="Holy Moly, Kingsnight" aria-label="Open photo: Holy Moly, Kingsnight">
+        <img src="img/gallery/p01-t.jpg" width="480" height="720" alt="Overhoff at Holy Moly, Kingsnight" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p02.jpg" data-cap="" aria-label="Open photo">
+        <img src="img/gallery/p02-t.jpg" width="540" height="720" alt="Overhoff" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p03.jpg" data-cap="Holy Moly, Kingsnight" aria-label="Open photo: Holy Moly, Kingsnight">
+        <img src="img/gallery/p03-t.jpg" width="720" height="480" alt="Overhoff at Holy Moly, Kingsnight" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p04.jpg" data-cap="" aria-label="Open photo">
+        <img src="img/gallery/p04-t.jpg" width="409" height="720" alt="Overhoff" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p05.jpg" data-cap="Holy Moly, Kingsnight" aria-label="Open photo: Holy Moly, Kingsnight">
+        <img src="img/gallery/p05-t.jpg" width="480" height="720" alt="Overhoff at Holy Moly, Kingsnight" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p06.jpg" data-cap="Dream Village" aria-label="Open photo: Dream Village">
+        <img src="img/gallery/p06-t.jpg" width="720" height="464" alt="Overhoff at Dream Village" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p07.jpg" data-cap="Holy Moly, Kingsnight" aria-label="Open photo: Holy Moly, Kingsnight">
+        <img src="img/gallery/p07-t.jpg" width="480" height="720" alt="Overhoff at Holy Moly, Kingsnight" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p08.jpg" data-cap="" aria-label="Open photo">
+        <img src="img/gallery/p08-t.jpg" width="501" height="720" alt="Overhoff" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p09.jpg" data-cap="Holy Moly, Kingsnight" aria-label="Open photo: Holy Moly, Kingsnight">
+        <img src="img/gallery/p09-t.jpg" width="720" height="480" alt="Overhoff at Holy Moly, Kingsnight" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p10.jpg" data-cap="Holy Moly, Kingsnight" aria-label="Open photo: Holy Moly, Kingsnight">
+        <img src="img/gallery/p10-t.jpg" width="480" height="720" alt="Overhoff at Holy Moly, Kingsnight" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p11.jpg" data-cap="" aria-label="Open photo">
+        <img src="img/gallery/p11-t.jpg" width="480" height="720" alt="Overhoff" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p12.jpg" data-cap="" aria-label="Open photo">
+        <img src="img/gallery/p12-t.jpg" width="480" height="720" alt="Overhoff" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p13.jpg" data-cap="" aria-label="Open photo">
+        <img src="img/gallery/p13-t.jpg" width="405" height="720" alt="Overhoff" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p14.jpg" data-cap="" aria-label="Open photo">
+        <img src="img/gallery/p14-t.jpg" width="540" height="720" alt="Overhoff" loading="lazy">
+      </button>
+      <button class="ph reveal" data-full="img/gallery/p15.jpg" data-cap="" aria-label="Open photo">
+        <img src="img/gallery/p15-t.jpg" width="540" height="720" alt="Overhoff" loading="lazy">
+      </button>
     </div>
   </div>
 </section>
 
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lb-close mono" aria-label="Close">Close ✕</button>
+  <button class="lb-nav lb-prev" aria-label="Previous">‹</button>
+  <div class="lb-stage"></div>
+  <button class="lb-nav lb-next" aria-label="Next">›</button>
+  <div class="lb-cap mono"></div>
+</div>
+
 <section id="booking" style="padding-top:0">
   <div class="wrap">
-    <div class="head"><span class="mono">Bookings</span></div>
-    <div class="book">
+    <div class="head reveal"><span class="mono">Bookings</span></div>
+    <div class="book reveal">
       <div>
         <h2 class="display">Get in touch</h2>
         <p>For bookings, availability or unreleased music, Maurits handles all enquiries on behalf of Overhoff.</p>
@@ -422,6 +596,45 @@ const TRACKS = [
     if(items[i+1]) select(items[i+1], 0); else setState(null);
   });
   window.addEventListener("resize", ()=>items.forEach(draw));
+})();
+</script>
+
+<script>
+/* scroll reveals, parallax, waveform build-in */
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els = document.querySelectorAll('.reveal');
+  if(reduce || !('IntersectionObserver' in window)){ els.forEach(e=>e.classList.add('in')); return; }
+  const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12, rootMargin:'0px 0px -6% 0px'});
+  els.forEach(e=>io.observe(e));
+  const par = [...document.querySelectorAll('.parallax img, .intro-photo')];
+  let tick=false;
+  addEventListener('scroll',()=>{ if(tick) return; tick=true; requestAnimationFrame(()=>{
+    par.forEach(el=>{ const r=el.getBoundingClientRect(); const c=(r.top+r.height/2-innerHeight/2)/innerHeight; el.style.transform=`translateY(${(c*-28).toFixed(1)}px)`; });
+    tick=false; }); },{passive:true});
+})();
+</script>
+
+<script>
+/* gallery lightbox */
+(function(){
+  const lb=document.getElementById('lightbox'), stage=lb.querySelector('.lb-stage'), cap=lb.querySelector('.lb-cap');
+  const photos=[...document.querySelectorAll('.ph')]; let idx=-1;
+  function open(){ lb.hidden=false; document.body.style.overflow='hidden'; }
+  function close(){ lb.hidden=true; stage.innerHTML=''; lb.classList.remove('video'); document.body.style.overflow=''; idx=-1; }
+  function showPhoto(i){ idx=(i+photos.length)%photos.length; const p=photos[idx];
+    stage.innerHTML=''; const im=new Image(); im.src=p.dataset.full; im.alt=p.querySelector('img').alt; stage.appendChild(im);
+    cap.textContent=p.dataset.cap||''; lb.classList.remove('video'); open(); }
+  photos.forEach((p,i)=>p.addEventListener('click',()=>showPhoto(i)));
+  document.querySelectorAll('.vcard').forEach(v=>v.addEventListener('click',()=>{
+    stage.innerHTML='<iframe allow="autoplay; fullscreen" allowfullscreen src="https://drive.google.com/file/d/'+v.dataset.video+'/preview"></iframe>';
+    cap.textContent=v.querySelector('.vmeta b').textContent+' · '+v.querySelector('.vmeta .mono').textContent;
+    lb.classList.add('video'); idx=-1; open(); }));
+  lb.querySelector('.lb-close').addEventListener('click',close);
+  lb.querySelector('.lb-prev').addEventListener('click',()=>idx>=0&&showPhoto(idx-1));
+  lb.querySelector('.lb-next').addEventListener('click',()=>idx>=0&&showPhoto(idx+1));
+  lb.addEventListener('click',e=>{ if(e.target===lb||e.target===stage) close(); });
+  addEventListener('keydown',e=>{ if(lb.hidden) return; if(e.key==='Escape') close(); if(idx>=0&&e.key==='ArrowRight') showPhoto(idx+1); if(idx>=0&&e.key==='ArrowLeft') showPhoto(idx-1); });
 })();
 </script>
 </body>
