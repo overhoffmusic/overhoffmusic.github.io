@@ -63,7 +63,8 @@ img{display:block;max-width:100%}
 section{padding:clamp(48px,7vw,88px) 0}
 .head{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--ink);margin-bottom:32px}
 .head::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent)}
-.head .mono{font-weight:700}
+.head .mono{font-weight:700;font-size:clamp(13px,1.1vw,15px);letter-spacing:.2em}
+.head .sub{font-size:11px!important;font-weight:400!important}
 .head .sub{margin-left:auto;color:var(--muted)}
 
 /* highlights */
@@ -340,7 +341,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
 
 <section id="live" style="padding-top:0">
   <div class="wrap">
-    <div class="head reveal"><span class="mono">Live highlights</span></div>
+    <div class="head reveal"><span class="mono">Show Highlights</span></div>
     <div class="hl">
       <div class="reveal" style="--d:0s"><span class="mono n">01</span><h3 class="display">Madam</h3><p>A'DAM Toren, Amsterdam<br>B2B with Milan Fernandes</p></div>
       <div class="reveal" style="--d:0.05s"><span class="mono n">02</span><h3 class="display">Toffler</h3><p>Rotterdam</p></div>
